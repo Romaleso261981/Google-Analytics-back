@@ -1,31 +1,36 @@
 const express = require("express");
 const axios = require("axios");
-const { BigQuery } = require("@google-cloud/bigquery");
+const cors = require("cors");
+// const { BigQuery } = require('@google-cloud/bigquery');
 
 const app = express();
 const port = 3000;
+
+// Включення CORS для всіх запитів
+app.use(cors());
 
 // Парсинг JSON тіла запиту
 app.use(express.json());
 
 // Telegram бот токен і ID групи
-const TELEGRAM_BOT_TOKEN = "your_telegram_bot_token";
-const TELEGRAM_CHAT_ID = "your_telegram_chat_id";
+const TELEGRAM_BOT_TOKEN = "7077738581:AAEqoAWJvox6ouc6foEcZNLTNWO6N8MSaNw";
+const TELEGRAM_CHAT_ID = "-1001682516809";
 
 // Конфігурація BigQuery
-const bigquery = new BigQuery({
-  projectId: "your_project_id",
-  keyFilename: "path_to_your_service_account_key.json"
-});
+// const bigquery = new BigQuery({
+//   projectId: 'your_project_id',
+//   keyFilename: 'path_to_your_service_account_key.json',
+// });
 
 // Ім'я набору даних і таблиці в BigQuery
-const datasetId = "your_dataset_id";
-const tableId = "your_table_id";
+// const datasetId = 'your_dataset_id';
+// const tableId = 'your_table_id';
 
 // Прийом POST запитів
 app.post("/webhook", async (req, res) => {
   try {
     const requestData = req.body;
+    console.log("Request data:", requestData);
 
     // Витягування необхідних даних з тіла запиту (згідно з ТЗ)
     const {
@@ -63,7 +68,7 @@ app.post("/webhook", async (req, res) => {
     );
 
     // Запис даних до таблиці BigQuery
-    await bigquery.dataset(datasetId).table(tableId).insert([requestData]);
+    // await bigquery.dataset(datasetId).table(tableId).insert([requestData]);
 
     res.status(200).send("Data received and processed successfully");
   } catch (error) {
